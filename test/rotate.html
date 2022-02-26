@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>JavaScript rotate images</title>
+  </head>
+  <body>
+    <img id="img" src="arrow.png" width="200" height="200" />
+    <button onClick="rotateImg()">Rotate Image</button>
+    <br />
+    <!-- 출력 area -->
+    <textarea id="messageTextArea" rows="10" cols="50"></textarea>
+    <script>
+      let rotation = 0;
+      function rotateImg() {
+        rotation += 45; // add 90 degrees, you can change this as you want
+        if (rotation === 360) { 
+          // 360 means rotate back to 0
+          rotation = 0;
+        }
+        document.querySelector("#img").style.transform = `rotate(${rotation}deg)`;
+      }
+
+    var webSocket = new WebSocket("ws://localhost:9988");
+    // 웹 서버와의 통신을 주고 받은 결과를 출력할 오브젝트를 가져옵니다.
+    var messageTextArea = document.getElementById("messageTextArea");
+    // 소켓 접속이 되면 호출되는 함수
+    webSocket.onopen = function(message){
+    messageTextArea.value += "Server connect...\n";
+    };
+    // 소켓 접속이 끝나면 호출되는 함수
+    webSocket.onclose = function(message){
+    messageTextArea.value += "Server Disconnect...\n";
+    };
+    // 소켓 통신 중에 에러가 발생되면 호출되는 함수
+    webSocket.onerror = function(message){
+    messageTextArea.value += "error...\n";
+    };
+    // 소켓 서버로 부터 메시지가 오면 호출되는 함수.
+    webSocket.onmessage = function(message){
+    // 출력 area에 메시지를 표시한다.
+    messageTextArea.value += "Recieve From Server => "+message.data+"\n";
+    };
+    </script>
+  </body>
+</html>
